@@ -7,8 +7,13 @@ package gogs
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+)
+
+var (
+	ErrInvalidReceiveHook = errors.New("Invalid JSON payload received over webhook")
 )
 
 type Hook struct {
@@ -54,4 +59,59 @@ func (c *Client) EditRepoHook(user, repo string, id int64, opt EditHookOption) e
 	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/hooks/%d", user, repo, id),
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body))
 	return err
+}
+
+type PayloadAuthor struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	UserName string `json:"username"`
+}
+
+type PayloadCommit struct {
+	Id      string         `json:"id"`
+	Message string         `json:"message"`
+	Url     string         `json:"url"`
+	Author  *PayloadAuthor `json:"author"`
+}
+
+type PayloadRepo struct {
+	Id          int64          `json:"id"`
+	Name        string         `json:"name"`
+	Url         string         `json:"url"`
+	Description string         `json:"description"`
+	Website     string         `json:"website"`
+	Watchers    int            `json:"watchers"`
+	Owner       *PayloadAuthor `json:"owner"`
+	Private     bool           `json:"private"`
+}
+
+// Payload represents a payload information of hook.
+type Payload struct {
+	Secret     string           `json:"secret"`
+	Ref        string           `json:"ref"`
+	Commits    []*PayloadCommit `json:"commits"`
+	Repo       *PayloadRepo     `json:"repository"`
+	Pusher     *PayloadAuthor   `json:"pusher"`
+	Before     string           `json:"before"`
+	After      string           `json:"after"`
+	CompareUrl string           `json:"compare_url"`
+}
+
+// ParseHook parses Gogs webhook content.
+func ParseHook(raw []byte) (*Payload, error) {
+	hook := new(Payload)
+	if err := json.Unmarshal(raw, hook); err != nil {
+		return nil, err
+	}
+	// it is possible the JSON was parsed, however,
+	// was not from Github (maybe was from Bitbucket)
+	// So we'll check to be sure certain key fields
+	// were populated
+	switch {
+	case hook.Repo == nil:
+		return nil, ErrInvalidReceiveHook
+	case len(hook.Ref) == 0:
+		return nil, ErrInvalidReceiveHook
+	}
+	return hook, nil
 }
