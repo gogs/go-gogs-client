@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -114,4 +115,9 @@ func ParseHook(raw []byte) (*Payload, error) {
 		return nil, ErrInvalidReceiveHook
 	}
 	return hook, nil
+}
+
+// Branch returns branch name from a payload
+func (h *Payload) Branch() string {
+	return strings.Replace(h.Ref, "refs/heads/", "", -1)
 }
