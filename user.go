@@ -4,9 +4,21 @@
 
 package gogs
 
+import (
+	"fmt"
+)
+
 // User represents a API user.
 type User struct {
 	Id        int64  `json:"id"`
 	UserName  string `json:"username"`
+	FullName  string `json:"full_name"`
+	Email     string `json:"email"`
 	AvatarUrl string `json:"avatar_url"`
+}
+
+func (c *Client) GetUserInfo(user string) (*User, error) {
+	u := new(User)
+	err := c.getParsedResponse("GET", fmt.Sprintf("/users/%s", user), nil, nil, u)
+	return u, err
 }

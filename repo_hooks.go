@@ -37,14 +37,15 @@ type CreateHookOption struct {
 	Active bool              `json:"active"`
 }
 
-func (c *Client) CreateRepoHook(user, repo string, opt CreateHookOption) error {
+func (c *Client) CreateRepoHook(user, repo string, opt CreateHookOption) (*Hook, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/hooks", user, repo),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body))
-	return err
+	h := new(Hook)
+	err = c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/hooks", user, repo),
+		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), h)
+	return h, err
 }
 
 type EditHookOption struct {
