@@ -14,7 +14,7 @@ import (
 )
 
 func Version() string {
-	return "0.0.1"
+	return "0.0.2"
 }
 
 // Client represents a Gogs API client.
@@ -54,8 +54,11 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 		return nil, err
 	}
 
-	if resp.StatusCode == 404 {
-		return nil, errors.New("page not found")
+	switch resp.StatusCode {
+	case 403:
+		return nil, errors.New("403 Forbidden")
+	case 404:
+		return nil, errors.New("404 Not Found")
 	}
 
 	if resp.StatusCode != 200 && resp.StatusCode != 201 {

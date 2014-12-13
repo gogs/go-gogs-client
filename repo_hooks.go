@@ -27,13 +27,12 @@ type Hook struct {
 
 func (c *Client) ListRepoHooks(user, repo string) ([]*Hook, error) {
 	hooks := make([]*Hook, 0, 10)
-	err := c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/hooks", user, repo), nil, nil, &hooks)
-	return hooks, err
+	return hooks, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/hooks", user, repo), nil, nil, &hooks)
 }
 
 type CreateHookOption struct {
-	Type   string            `json:"type"`
-	Config map[string]string `json:"config"`
+	Type   string            `json:"type" binding:"Required"`
+	Config map[string]string `json:"config" binding:"Required"`
 	Active bool              `json:"active"`
 }
 
@@ -43,14 +42,13 @@ func (c *Client) CreateRepoHook(user, repo string, opt CreateHookOption) (*Hook,
 		return nil, err
 	}
 	h := new(Hook)
-	err = c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/hooks", user, repo),
+	return h, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/hooks", user, repo),
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), h)
-	return h, err
 }
 
 type EditHookOption struct {
 	Config map[string]string `json:"config"`
-	Active bool              `json:"active"`
+	Active *bool             `json:"active"`
 }
 
 func (c *Client) EditRepoHook(user, repo string, id int64, opt EditHookOption) error {
