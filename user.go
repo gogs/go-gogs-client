@@ -10,7 +10,7 @@ import (
 
 // User represents a API user.
 type User struct {
-	Id        int64  `json:"id"`
+	ID        int64  `json:"id"`
 	UserName  string `json:"username"`
 	FullName  string `json:"full_name"`
 	Email     string `json:"email"`
