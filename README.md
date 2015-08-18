@@ -1,7 +1,7 @@
 Gogs API client in Go
 =====================
 
-This package is still in experiment.
+This package is still in experiment, see [Wiki](https://github.com/gogits/go-gogs-client/wiki) for documentation.
 
 ## License
 
