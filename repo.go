@@ -41,10 +41,10 @@ func (c *Client) ListMyRepos() ([]*Repository, error) {
 type CreateRepoOption struct {
 	Name        string `json:"name" binding:"Required"`
 	Description string `json:"description" binding:"MaxSize(255)"`
-	Private     bool   `form:"private"`
-	AutoInit    bool   `form:"auto_init"`
-	Gitignore   string `form:"gitignore"`
-	License     string `form:"license"`
+	Private     bool   `json:"private"`
+	AutoInit    bool   `json:"auto_init"`
+	Gitignore   string `json:"gitignore"`
+	License     string `json:"license"`
 }
 
 // CreateRepo creates a repository for authenticated user.
