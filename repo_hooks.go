@@ -18,7 +18,7 @@ var (
 )
 
 type Hook struct {
-	Id     int64             `json:"id"`
+	ID     int64             `json:"id"`
 	Type   string            `json:"type"`
 	Events []string          `json:"events"`
 	Active bool              `json:"active"`
