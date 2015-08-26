@@ -1,4 +1,4 @@
-Gogs API client in Go
+Gitea SDK for Go
 =====================
 
 This package is still in experiment, see [Wiki](https://github.com/gogits/go-gogs-client/wiki) for documentation.
