@@ -61,23 +61,34 @@ func (c *Client) EditRepoHook(user, repo string, id int64, opt EditHookOption) e
 	return err
 }
 
+type Payloader interface {
+	SetSecret(string)
+	JSONPayload() ([]byte, error)
+}
+
 type PayloadAuthor struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	UserName string `json:"username"`
 }
 
+type PayloadUser struct {
+	UserName  string `json:"login"`
+	ID        int64  `json:"id"`
+	AvatarUrl string `json:"avatar_url"`
+}
+
 type PayloadCommit struct {
-	Id      string         `json:"id"`
+	ID      string         `json:"id"`
 	Message string         `json:"message"`
-	Url     string         `json:"url"`
+	URL     string         `json:"url"`
 	Author  *PayloadAuthor `json:"author"`
 }
 
 type PayloadRepo struct {
-	Id          int64          `json:"id"`
+	ID          int64          `json:"id"`
 	Name        string         `json:"name"`
-	Url         string         `json:"url"`
+	URL         string         `json:"url"`
 	Description string         `json:"description"`
 	Website     string         `json:"website"`
 	Watchers    int            `json:"watchers"`
@@ -85,26 +96,42 @@ type PayloadRepo struct {
 	Private     bool           `json:"private"`
 }
 
-// Payload represents a payload information of hook.
-type Payload struct {
-	Secret     string           `json:"secret"`
-	Ref        string           `json:"ref"`
-	Commits    []*PayloadCommit `json:"commits"`
-	Repo       *PayloadRepo     `json:"repository"`
-	Pusher     *PayloadAuthor   `json:"pusher"`
-	Before     string           `json:"before"`
-	After      string           `json:"after"`
-	CompareUrl string           `json:"compare_url"`
+// _________                        __
+// \_   ___ \_______   ____ _____ _/  |_  ____
+// /    \  \/\_  __ \_/ __ \\__  \\   __\/ __ \
+// \     \____|  | \/\  ___/ / __ \|  | \  ___/
+//  \______  /|__|    \___  >____  /__|  \___  >
+//         \/             \/     \/          \/
+
+type CreatePayload struct {
+	Secret  string       `json:"secret"`
+	Ref     string       `json:"ref"`
+	RefType string       `json:"ref_type"`
+	Repo    *PayloadRepo `json:"repository"`
+	Sender  *PayloadUser `json:"sender"`
 }
 
-// ParseHook parses Gogs webhook content.
-func ParseHook(raw []byte) (*Payload, error) {
-	hook := new(Payload)
+func (p *CreatePayload) SetSecret(secret string) {
+	p.Secret = secret
+}
+
+func (p *CreatePayload) JSONPayload() ([]byte, error) {
+	data, err := json.MarshalIndent(p, "", "  ")
+	if err != nil {
+		return []byte{}, err
+	}
+	return data, nil
+}
+
+// ParseCreateHook parses create event hook content.
+func ParseCreateHook(raw []byte) (*CreatePayload, error) {
+	hook := new(CreatePayload)
 	if err := json.Unmarshal(raw, hook); err != nil {
 		return nil, err
 	}
+
 	// it is possible the JSON was parsed, however,
-	// was not from Github (maybe was from Bitbucket)
+	// was not from Gogs (maybe was from Bitbucket)
 	// So we'll check to be sure certain key fields
 	// were populated
 	switch {
@@ -116,7 +143,55 @@ func ParseHook(raw []byte) (*Payload, error) {
 	return hook, nil
 }
 
+// __________             .__
+// \______   \__ __  _____|  |__
+//  |     ___/  |  \/  ___/  |  \
+//  |    |   |  |  /\___ \|   Y  \
+//  |____|   |____//____  >___|  /
+//                      \/     \/
+
+// PushPayload represents a payload information of push event.
+type PushPayload struct {
+	Secret     string           `json:"secret"`
+	Ref        string           `json:"ref"`
+	Before     string           `json:"before"`
+	After      string           `json:"after"`
+	CompareUrl string           `json:"compare_url"`
+	Commits    []*PayloadCommit `json:"commits"`
+	Repo       *PayloadRepo     `json:"repository"`
+	Pusher     *PayloadAuthor   `json:"pusher"`
+	Sender     *PayloadUser     `json:"sender"`
+}
+
+func (p *PushPayload) SetSecret(secret string) {
+	p.Secret = secret
+}
+
+func (p *PushPayload) JSONPayload() ([]byte, error) {
+	data, err := json.MarshalIndent(p, "", "  ")
+	if err != nil {
+		return []byte{}, err
+	}
+	return data, nil
+}
+
+// ParsePushHook parses push event hook content.
+func ParsePushHook(raw []byte) (*PushPayload, error) {
+	hook := new(PushPayload)
+	if err := json.Unmarshal(raw, hook); err != nil {
+		return nil, err
+	}
+
+	switch {
+	case hook.Repo == nil:
+		return nil, ErrInvalidReceiveHook
+	case len(hook.Ref) == 0:
+		return nil, ErrInvalidReceiveHook
+	}
+	return hook, nil
+}
+
 // Branch returns branch name from a payload
-func (h *Payload) Branch() string {
-	return strings.Replace(h.Ref, "refs/heads/", "", -1)
+func (p *PushPayload) Branch() string {
+	return strings.Replace(p.Ref, "refs/heads/", "", -1)
 }
