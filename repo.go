@@ -43,8 +43,9 @@ type CreateRepoOption struct {
 	Description string `json:"description" binding:"MaxSize(255)"`
 	Private     bool   `json:"private"`
 	AutoInit    bool   `json:"auto_init"`
-	Gitignore   string `json:"gitignore"`
+	Gitignores  string `json:"gitignores"`
 	License     string `json:"license"`
+	Readme      string `json:"readme"`
 }
 
 // CreateRepo creates a repository for authenticated user.
