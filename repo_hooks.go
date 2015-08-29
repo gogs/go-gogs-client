@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var (
@@ -18,11 +19,14 @@ var (
 )
 
 type Hook struct {
-	ID     int64             `json:"id"`
-	Type   string            `json:"type"`
-	Events []string          `json:"events"`
-	Active bool              `json:"active"`
-	Config map[string]string `json:"config"`
+	ID      int64             `json:"id"`
+	Type    string            `json:"type"`
+	URL     string            `json:"-"`
+	Config  map[string]string `json:"config"`
+	Events  []string          `json:"events"`
+	Active  bool              `json:"active"`
+	Updated time.Time         `json:"updated_at"`
+	Created time.Time         `json:"created_at"`
 }
 
 func (c *Client) ListRepoHooks(user, repo string) ([]*Hook, error) {
@@ -33,6 +37,7 @@ func (c *Client) ListRepoHooks(user, repo string) ([]*Hook, error) {
 type CreateHookOption struct {
 	Type   string            `json:"type" binding:"Required"`
 	Config map[string]string `json:"config" binding:"Required"`
+	Events []string          `json:"events"`
 	Active bool              `json:"active"`
 }
 
@@ -48,6 +53,7 @@ func (c *Client) CreateRepoHook(user, repo string, opt CreateHookOption) (*Hook,
 
 type EditHookOption struct {
 	Config map[string]string `json:"config"`
+	Events []string          `json:"events"`
 	Active *bool             `json:"active"`
 }
 
