@@ -14,7 +14,6 @@ import (
 
 type Release struct {
 	Id    				int64             `json:"id"`
-	Repo   				Repository        `json:"repository"`
 	Publisher			User			  `json:"publisher"`
 	TagName				string			  `json:"tag_name"`
 	LowerTagName		string			  `json:"lower_tag_name"`
@@ -47,7 +46,6 @@ type CreateReleaseOption struct {
 	Note				string		  	  `json:"note"`
 	IsDraft				bool		  	  `json:"draft"`
 	IsPrerelease		bool		  	  `json:"prerelease"`
-	Created				time.Time		  `json:"created"`
 }
 
 
