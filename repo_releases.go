@@ -13,7 +13,7 @@ import (
 )
 
 type Release struct {
-	Id    				int64             `json:"id"`
+	ID 					int64             `json:"id"`
 	Publisher			User			  `json:"publisher"`
 	TagName				string			  `json:"tag_name"`
 	LowerTagName		string			  `json:"lower_tag_name"`
