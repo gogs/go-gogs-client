@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+type Sha1 struct {
+	Sha1  string             	  `json:"sha1"`
+}
+
 type Signature struct {
 	Email   string            `json:"email"`
 	Name    string            `json:"name"`
@@ -52,7 +56,7 @@ type Diff struct {
 	Files				[]*DiffFile			`json:"files"`
 }
 
-func (c *Client) CommitById(user, repo, id string) (*Commit, error) {
+func (c *Client) CommitByID(user, repo, id string) (*Commit, error) {
 	commit := new(Commit)
 	return commit, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/commits/%s", user, repo, id), nil, nil, commit)
 }
