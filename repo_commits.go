@@ -25,7 +25,7 @@ type Commit struct {
 type DiffLine struct {
 	LeftIdx  int		`json:"left_idx"`
 	RightIdx int		`json:"right_idx"`
-	Type     int		`json:"type"`
+	Type     string		`json:"type"`
 	Content  string		`json:"content"`
 }
 
@@ -39,7 +39,7 @@ type DiffFile struct {
 	Index              int					`json:"index"`
 	Addition		   int 					`json:"addition"`
 	Deletion 		   int					`json:"deletion"`
-	Type               int					`json:"type"`
+	Type               string				`json:"type"`
 	IsCreated          bool					`json:"created"`
 	IsDeleted          bool					`json:"deleted"`
 	IsBin              bool					`json:"bin"`
