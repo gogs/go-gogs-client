@@ -72,5 +72,6 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 
 // DeleteRepo deletes a repository of user or organization.
 func (c *Client) DeleteRepo(owner, repo string) error {
-	return c.getParsedResponse("DELETE", fmt.Sprintf("/repos/%s/%s", owner, repo), nil, nil)
+	_, err := c.getResponse("DELETE", fmt.Sprintf("/repos/%s/%s", owner, repo), nil, nil)
+	return err
 }
