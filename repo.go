@@ -69,3 +69,8 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 	return repo, c.getParsedResponse("POST", fmt.Sprintf("/org/%s/repos", org),
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
 }
+
+// DeleteRepo deletes a repository of user or organization.
+func (c *Client) DeleteRepo(owner, repo string) error {
+	return c.getParsedResponse("DELETE", fmt.Sprintf("/repos/%s/%s", owner, repo), nil, nil)
+}
