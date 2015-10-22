@@ -14,7 +14,7 @@ import (
 )
 
 func Version() string {
-	return "0.0.2"
+	return "0.0.4"
 }
 
 // Client represents a Gogs API client.
@@ -31,6 +31,11 @@ func NewClient(url, token string) *Client {
 		accessToken: token,
 		client:      &http.Client{},
 	}
+}
+
+// SetHTTPClient replaces default http.Client with user given one.
+func (c *Client) SetHTTPClient(client *http.Client) {
+	c.client = client
 }
 
 func (c *Client) getResponse(method, path string, header http.Header, body io.Reader) ([]byte, error) {

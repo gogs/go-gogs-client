@@ -70,6 +70,13 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
 }
 
+// GetRepo returns information of a repository of given owner.
+func (c *Client) GetRepo(owner, reponame string) (*Repository, error) {
+	repo := new(Repository)
+	return repo, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s", owner, reponame),
+		http.Header{"content-type": []string{"application/json"}}, nil, repo)
+}
+
 // DeleteRepo deletes a repository of user or organization.
 func (c *Client) DeleteRepo(owner, repo string) error {
 	_, err := c.getResponse("DELETE", fmt.Sprintf("/repos/%s/%s", owner, repo), nil, nil)
