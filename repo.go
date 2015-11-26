@@ -76,13 +76,24 @@ type ForkRepoOption struct {
 	TargetUser  string `json:"target_username"`
 }
 
-// CreateOrgRepo creates an organization repository for authenticated user.
-func (c *Client) ForkRepo(username string, reponame string, opt ForkRepoOption) (*Repository, error) {
+func (c *Client) ForkRepo(user string, repoName string, opt ForkRepoOption) (*Repository, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
 	}
 	repo := new(Repository)
-	return repo, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/forks", username, reponame),
+	return repo, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/forks", user, repoName),
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
+}
+
+type CollaboratorOption struct {
+	UserName        string `json:"user_name" binding:"Required"`
+}
+
+func (c *Client) AddCollaborator(user string, repo string, opt CollaboratorOption) (error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return nil, err
+	}
+
 }
