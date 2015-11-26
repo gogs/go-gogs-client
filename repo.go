@@ -73,7 +73,6 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 type ForkRepoOption struct {
 	Name        string `json:"name" binding:"Required"`
 	Description string `json:"description" binding:"MaxSize(255)"`
-	Private     bool   `json:"private"`
 	TargetUser  string `json:"target_username"`
 }
 
