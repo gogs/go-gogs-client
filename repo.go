@@ -133,6 +133,6 @@ func (c *Client) AddCollaborator(user string, repo string, opt CollaboratorOptio
 	if err != nil {
 		return err
 	}
-	_, err = c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/collaborators", user, repo), http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body))
+	_, err = c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/collaboration", user, repo), http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body))
 	return err
 }
