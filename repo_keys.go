@@ -26,12 +26,17 @@ func (c *Client) ListDeployKeys(user, repo string) ([]*DeployKey, error) {
 	return keys, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/keys", user, repo), nil, nil, &keys)
 }
 
-type CreateDeployKeyOption struct {
+func (c *Client) GetDeployKey(user, repo string, keyID int64) (*DeployKey, error) {
+	key := new(DeployKey)
+	return key, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/keys/%d", user, repo, keyID), nil, nil, &key)
+}
+
+type CreateKeyOption struct {
 	Title string `json:"title" binding:"Required"`
 	Key   string `json:"key" binding:"Required"`
 }
 
-func (c *Client) CreateDeployKey(user, repo string, opt CreateDeployKeyOption) (*DeployKey, error) {
+func (c *Client) CreateDeployKey(user, repo string, opt CreateKeyOption) (*DeployKey, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
