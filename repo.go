@@ -70,7 +70,6 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
 }
 
-// GetRepo returns information of a repository of given owner.
 func (c *Client) GetRepo(owner, reponame string) (*Repository, error) {
 	repo := new(Repository)
 	return repo, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s", owner, reponame),
@@ -107,4 +106,33 @@ func (c *Client) MigrateRepo(opt MigrateRepoOption) (*Repository, error) {
 	repo := new(Repository)
 	return repo, c.getParsedResponse("POST", "/repos/migrate",
 		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
+}
+
+type ForkRepoOption struct {
+	Name        string `json:"name" binding:"Required"`
+	Description string `json:"description" binding:"MaxSize(255)"`
+	TargetUser  string `json:"target_username"`
+}
+
+func (c *Client) ForkRepo(user string, repoName string, opt ForkRepoOption) (*Repository, error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return nil, err
+	}
+	repo := new(Repository)
+	return repo, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/forks", user, repoName),
+		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
+}
+
+type CollaboratorOption struct {
+	UserName        string `json:"user_name" binding:"Required"`
+}
+
+func (c *Client) AddCollaborator(user string, repo string, opt CollaboratorOption) (error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return err
+	}
+	_, err = c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/collaboration", user, repo), http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body))
+	return err
 }
