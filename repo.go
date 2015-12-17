@@ -34,8 +34,7 @@ type Repository struct {
 // ListMyRepos lists all repositories for the authenticated user that has access to.
 func (c *Client) ListMyRepos() ([]*Repository, error) {
 	repos := make([]*Repository, 0, 10)
-	err := c.getParsedResponse("GET", "/user/repos", nil, nil, &repos)
-	return repos, err
+	return repos, c.getParsedResponse("GET", "/user/repos", nil, nil, &repos)
 }
 
 type CreateRepoOption struct {
@@ -73,8 +72,7 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 // GetRepo returns information of a repository of given owner.
 func (c *Client) GetRepo(owner, reponame string) (*Repository, error) {
 	repo := new(Repository)
-	return repo, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s", owner, reponame),
-		http.Header{"content-type": []string{"application/json"}}, nil, repo)
+	return repo, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s", owner, reponame), nil, nil, repo)
 }
 
 // DeleteRepo deletes a repository of user or organization.
