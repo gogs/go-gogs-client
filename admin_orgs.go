@@ -12,7 +12,7 @@ import (
 )
 
 type CreateOrgOption struct {
-	UserName    string `json:"username"`
+	UserName    string `json:"username" binding:"Required"`
 	FullName    string `json:"full_name"`
 	Description string `json:"description"`
 	Website     string `json:"website"`
