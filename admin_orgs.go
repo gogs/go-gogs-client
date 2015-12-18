@@ -19,7 +19,7 @@ type CreateOrgOption struct {
 	Location    string `json:"location"`
 }
 
-func (c *Client) CreateOrg(user string, opt CreateOrgOption) (*Organization, error) {
+func (c *Client) AdminCreateOrg(user string, opt CreateOrgOption) (*Organization, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err

@@ -20,7 +20,7 @@ type CreateUserOption struct {
 	SendNotify bool   `json:"send_notify"`
 }
 
-func (c *Client) CreateUser(opt CreateUserOption) (*User, error) {
+func (c *Client) AdminCreateUser(opt CreateUserOption) (*User, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ type EditUserOption struct {
 	AllowImportLocal *bool  `json:"allow_import_local"`
 }
 
-func (c *Client) EditUser(user string, opt EditUserOption) error {
+func (c *Client) AdminEditUser(user string, opt EditUserOption) error {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return err
@@ -54,12 +54,12 @@ func (c *Client) EditUser(user string, opt EditUserOption) error {
 	return err
 }
 
-func (c *Client) DeleteUser(user string) error {
+func (c *Client) AdminDeleteUser(user string) error {
 	_, err := c.getResponse("DELETE", fmt.Sprintf("/admin/users/%s", user), nil, nil)
 	return err
 }
 
-func (c *Client) CreateUserPublicKey(user string, opt CreateKeyOption) (*PublicKey, error) {
+func (c *Client) AdminCreateUserPublicKey(user string, opt CreateKeyOption) (*PublicKey, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
