@@ -14,7 +14,7 @@ import (
 )
 
 func Version() string {
-	return "0.6.0"
+	return "0.7.0"
 }
 
 // Client represents a Gogs API client.
@@ -66,7 +66,7 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 		return nil, errors.New("404 Not Found")
 	}
 
-	if resp.StatusCode != 200 && resp.StatusCode != 201 {
+	if resp.StatusCode%100 != 2 {
 		errMap := make(map[string]interface{})
 		if err = json.Unmarshal(data, &errMap); err != nil {
 			return nil, err
