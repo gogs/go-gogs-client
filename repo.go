@@ -38,7 +38,7 @@ func (c *Client) ListMyRepos() ([]*Repository, error) {
 }
 
 type CreateRepoOption struct {
-	Name        string `json:"name" binding:"Required"`
+	Name        string `json:"name" binding:"Required;AlphaDashDot;MaxSize(100)"`
 	Description string `json:"description" binding:"MaxSize(255)"`
 	Private     bool   `json:"private"`
 	AutoInit    bool   `json:"auto_init"`
