@@ -47,6 +47,10 @@ type CreateRepoOption struct {
 	Readme      string `json:"readme"`
 }
 
+type CreateAccessOption struct {
+	Username string `json:"username" binding:"Required"`
+}
+
 // CreateRepo creates a repository for authenticated user.
 func (c *Client) CreateRepo(opt CreateRepoOption) (*Repository, error) {
 	body, err := json.Marshal(&opt)
