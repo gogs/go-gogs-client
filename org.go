@@ -42,6 +42,9 @@ type EditOrgOption struct {
 	Website     string `json:"website"`
 	Location    string `json:"location"`
 }
+type AddUserOption struct {
+	UserName string `json:"username"`
+}
 
 func (c *Client) EditOrg(orgname string, opt EditOrgOption) error {
 	body, err := json.Marshal(&opt)
