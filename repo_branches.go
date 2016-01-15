@@ -1,8 +1,8 @@
 package gogs
 
 type Branch struct {
-	name      string         `json:"name"`
-	commit    *PayloadCommit `json:"commit"`
+	Name      string         `json:"name"`
+	Commit    *PayloadCommit `json:"commit"`
 }
 
 func (c *Client) ListRepoBranches(user, repo string) ([]*Branch, error) {
