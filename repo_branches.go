@@ -1,5 +1,9 @@
 package gogs
 
+import (
+	"fmt"
+)
+
 type Branch struct {
 	Name      string         `json:"name"`
 	Commit    *PayloadCommit `json:"commit"`
