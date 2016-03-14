@@ -105,6 +105,11 @@ type PayloadRepo struct {
 	DefaultBranch string         `json:"default_branch"`
 }
 
+var (
+	_ Payloader = &CreatePayload{}
+	_ Payloader = &PushPayload{}
+)
+
 // _________                        __
 // \_   ___ \_______   ____ _____ _/  |_  ____
 // /    \  \/\_  __ \_/ __ \\__  \\   __\/ __ \
