@@ -11,14 +11,6 @@ import (
 	"net/http"
 )
 
-type CreateOrgOption struct {
-	UserName    string `json:"username" binding:"Required"`
-	FullName    string `json:"full_name"`
-	Description string `json:"description"`
-	Website     string `json:"website"`
-	Location    string `json:"location"`
-}
-
 func (c *Client) AdminCreateOrg(user string, opt CreateOrgOption) (*Organization, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
