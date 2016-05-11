@@ -53,6 +53,7 @@ type CreateIssueOption struct {
 	Assignee  string  `json:"assignee"`
 	Milestone int64   `json:"milestone"`
 	Labels    []int64 `json:"labels"`
+	Closed    bool    `json:"closed"`
 }
 
 func (c *Client) CreateIssue(owner, repo string, opt CreateIssueOption) (*Issue, error) {
