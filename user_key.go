@@ -25,9 +25,9 @@ func (c *Client) ListPublicKeys(user string) ([]*PublicKey, error) {
 	return keys, c.getParsedResponse("GET", fmt.Sprintf("/users/%s/keys", user), nil, nil, &keys)
 }
 
-func (c *Client) ListMyPublicKeys(user string) ([]*PublicKey, error) {
+func (c *Client) ListMyPublicKeys() ([]*PublicKey, error) {
 	keys := make([]*PublicKey, 0, 10)
-	return keys, c.getParsedResponse("GET", fmt.Sprintf("/user/keys", user), nil, nil, &keys)
+	return keys, c.getParsedResponse("GET", "/user/keys", nil, nil, &keys)
 }
 
 func (c *Client) GetPublicKey(keyID int64) (*PublicKey, error) {
