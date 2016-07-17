@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"strings"
 	"time"
 )
@@ -47,8 +46,7 @@ func (c *Client) CreateRepoHook(user, repo string, opt CreateHookOption) (*Hook,
 		return nil, err
 	}
 	h := new(Hook)
-	return h, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/hooks", user, repo),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), h)
+	return h, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/hooks", user, repo), jsonHeader, bytes.NewReader(body), h)
 }
 
 type EditHookOption struct {
@@ -62,8 +60,12 @@ func (c *Client) EditRepoHook(user, repo string, id int64, opt EditHookOption) e
 	if err != nil {
 		return err
 	}
-	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/hooks/%d", user, repo, id),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body))
+	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/hooks/%d", user, repo, id), jsonHeader, bytes.NewReader(body))
+	return err
+}
+
+func (c *Client) DeleteRepoHook(user, repo string, id int64) error {
+	_, err := c.getResponse("DELETE", fmt.Sprintf("/repos/%s/%s/hooks/%d", user, repo, id), nil, nil)
 	return err
 }
 

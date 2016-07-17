@@ -4,6 +4,12 @@
 
 package gogs
 
+import (
+	"net/http"
+)
+
+var jsonHeader = http.Header{"content-type": []string{"application/json"}}
+
 func Bool(v bool) *bool {
 	return &v
 }

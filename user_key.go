@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 )
 
@@ -41,8 +40,7 @@ func (c *Client) CreatePublicKey(opt CreateKeyOption) (*PublicKey, error) {
 		return nil, err
 	}
 	key := new(PublicKey)
-	return key, c.getParsedResponse("POST", "/user/keys",
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), key)
+	return key, c.getParsedResponse("POST", "/user/keys", jsonHeader, bytes.NewReader(body), key)
 }
 
 func (c *Client) DeletePublicKey(keyID int64) error {

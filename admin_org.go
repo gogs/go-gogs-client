@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 )
 
 func (c *Client) AdminCreateOrg(user string, opt CreateOrgOption) (*Organization, error) {
@@ -18,5 +17,5 @@ func (c *Client) AdminCreateOrg(user string, opt CreateOrgOption) (*Organization
 	}
 	org := new(Organization)
 	return org, c.getParsedResponse("POST", fmt.Sprintf("/admin/users/%s/orgs", user),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), org)
+		jsonHeader, bytes.NewReader(body), org)
 }

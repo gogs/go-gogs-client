@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 )
 
@@ -63,7 +62,7 @@ func (c *Client) CreateIssue(owner, repo string, opt CreateIssueOption) (*Issue,
 	}
 	issue := new(Issue)
 	return issue, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/issues", owner, repo),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), issue)
+		jsonHeader, bytes.NewReader(body), issue)
 }
 
 type EditIssueOption struct {
@@ -80,5 +79,5 @@ func (c *Client) EditIssue(owner, repo string, index int, opt EditIssueOption) (
 	}
 	issue := new(Issue)
 	return issue, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/%s/%s/issues/%d", owner, repo, index),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), issue)
+		jsonHeader, bytes.NewReader(body), issue)
 }

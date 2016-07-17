@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 )
 
@@ -62,8 +61,7 @@ func (c *Client) CreateRepo(opt CreateRepoOption) (*Repository, error) {
 		return nil, err
 	}
 	repo := new(Repository)
-	return repo, c.getParsedResponse("POST", "/user/repos",
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
+	return repo, c.getParsedResponse("POST", "/user/repos", jsonHeader, bytes.NewReader(body), repo)
 }
 
 // CreateOrgRepo creates an organization repository for authenticated user.
@@ -73,8 +71,7 @@ func (c *Client) CreateOrgRepo(org string, opt CreateRepoOption) (*Repository, e
 		return nil, err
 	}
 	repo := new(Repository)
-	return repo, c.getParsedResponse("POST", fmt.Sprintf("/org/%s/repos", org),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
+	return repo, c.getParsedResponse("POST", fmt.Sprintf("/org/%s/repos", org), jsonHeader, bytes.NewReader(body), repo)
 }
 
 // GetRepo returns information of a repository of given owner.
@@ -111,6 +108,5 @@ func (c *Client) MigrateRepo(opt MigrateRepoOption) (*Repository, error) {
 		return nil, err
 	}
 	repo := new(Repository)
-	return repo, c.getParsedResponse("POST", "/repos/migrate",
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), repo)
+	return repo, c.getParsedResponse("POST", "/repos/migrate", jsonHeader, bytes.NewReader(body), repo)
 }
