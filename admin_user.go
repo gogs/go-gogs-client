@@ -14,6 +14,7 @@ type CreateUserOption struct {
 	SourceID   int64  `json:"source_id"`
 	LoginName  string `json:"login_name"`
 	Username   string `json:"username" binding:"Required;AlphaDashDot;MaxSize(35)"`
+	FullName   string `json:"full_name" binding:"MaxSize(100)"`
 	Email      string `json:"email" binding:"Required;Email;MaxSize(254)"`
 	Password   string `json:"password" binding:"MaxSize(255)"`
 	SendNotify bool   `json:"send_notify"`
