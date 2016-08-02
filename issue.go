@@ -41,7 +41,7 @@ func (c *Client) ListRepoIssues(owner, repo string, opt ListIssueOption) ([]*Iss
 	return issues, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues?page=%d", owner, repo, opt.Page), nil, nil, &issues)
 }
 
-func (c *Client) GetIssue(owner, repo string, index int) (*Issue, error) {
+func (c *Client) GetIssue(owner, repo string, index int64) (*Issue, error) {
 	issue := new(Issue)
 	return issue, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues/%d", owner, repo, index), nil, nil, issue)
 }
@@ -72,7 +72,7 @@ type EditIssueOption struct {
 	Milestone *int64  `json:"milestone"`
 }
 
-func (c *Client) EditIssue(owner, repo string, index int, opt EditIssueOption) (*Issue, error) {
+func (c *Client) EditIssue(owner, repo string, index int64, opt EditIssueOption) (*Issue, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
