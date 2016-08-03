@@ -16,11 +16,6 @@ type Label struct {
 	Color string `json:"color"`
 }
 
-type LabelOption struct {
-	Name  string `json:"name"`
-	Color string `json:"color"`
-}
-
 func (c *Client) ListRepoLabels(owner, repo string) ([]*Label, error) {
 	labels := make([]*Label, 0, 10)
 	return labels, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/labels", owner, repo), nil, nil, &labels)
@@ -31,7 +26,12 @@ func (c *Client) GetRepoLabel(owner, repo string, id int64) (*Label, error) {
 	return label, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/labels/%d", owner, repo, id), nil, nil, label)
 }
 
-func (c *Client) CreateLabel(owner, repo string, opt LabelOption) (*Label, error) {
+type CreateLabelOption struct {
+	Name  string `json:"name" binding:"Required"`
+	Color string `json:"color" binding:"Required;Size(7)"`
+}
+
+func (c *Client) CreateLabel(owner, repo string, opt CreateLabelOption) (*Label, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,12 @@ func (c *Client) CreateLabel(owner, repo string, opt LabelOption) (*Label, error
 		jsonHeader, bytes.NewReader(body), label)
 }
 
-func (c *Client) EditLabel(owner, repo string, id int64, opt LabelOption) (*Label, error) {
+type EditLabelOption struct {
+	Name  *string `json:"name"`
+	Color *string `json:"color"`
+}
+
+func (c *Client) EditLabel(owner, repo string, id int64, opt EditLabelOption) (*Label, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
