@@ -11,7 +11,7 @@ import (
 )
 
 type AddOrgMembershipOption struct {
-	Role string `json:"role"`
+	Role string `json:"role" binding:"Required"`
 }
 
 func (c *Client) AddOrgMembership(org, user string, opt AddOrgMembershipOption) error {
