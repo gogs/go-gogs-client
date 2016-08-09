@@ -80,6 +80,12 @@ type PayloadAuthor struct {
 	UserName string `json:"username"`
 }
 
+type PayloadCommitter struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	UserName string `json:"username"`
+}
+
 type PayloadUser struct {
 	UserName  string `json:"login"`
 	ID        int64  `json:"id"`
@@ -87,10 +93,11 @@ type PayloadUser struct {
 }
 
 type PayloadCommit struct {
-	ID      string         `json:"id"`
-	Message string         `json:"message"`
-	URL     string         `json:"url"`
-	Author  *PayloadAuthor `json:"author"`
+	ID        string            `json:"id"`
+	Message   string            `json:"message"`
+	URL       string            `json:"url"`
+	Author    *PayloadAuthor    `json:"author"`
+	Committer *PayloadCommitter `json:"committer"`
 }
 
 type PayloadRepo struct {
