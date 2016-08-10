@@ -98,6 +98,7 @@ type PayloadCommit struct {
 	URL       string            `json:"url"`
 	Author    *PayloadAuthor    `json:"author"`
 	Committer *PayloadCommitter `json:"committer"`
+	Timestamp time.Time         `json:"timestamp"`
 }
 
 type PayloadRepo struct {
