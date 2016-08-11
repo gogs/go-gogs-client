@@ -41,6 +41,7 @@ type EditUserOption struct {
 	Admin            *bool  `json:"admin"`
 	AllowGitHook     *bool  `json:"allow_git_hook"`
 	AllowImportLocal *bool  `json:"allow_import_local"`
+	MaxRepoCreation  *int   `json:"max_repo_creation"`
 }
 
 func (c *Client) AdminEditUser(user string, opt EditUserOption) error {
