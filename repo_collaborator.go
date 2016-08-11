@@ -5,8 +5,8 @@
 package gogs
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
