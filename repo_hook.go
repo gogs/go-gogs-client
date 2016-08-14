@@ -74,45 +74,20 @@ type Payloader interface {
 	JSONPayload() ([]byte, error)
 }
 
-type PayloadAuthor struct {
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	UserName string `json:"username"`
-}
-
-type PayloadCommitter struct {
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	UserName string `json:"username"`
-}
-
 type PayloadUser struct {
-	UserName  string `json:"login"`
-	ID        int64  `json:"id"`
-	AvatarUrl string `json:"avatar_url"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	UserName string `json:"username"`
 }
 
+// FIXME: consider use same format as API when commits API are added.
 type PayloadCommit struct {
-	ID        string            `json:"id"`
-	Message   string            `json:"message"`
-	URL       string            `json:"url"`
-	Author    *PayloadAuthor    `json:"author"`
-	Committer *PayloadCommitter `json:"committer"`
-	Timestamp time.Time         `json:"timestamp"`
-}
-
-type PayloadRepo struct {
-	ID            int64          `json:"id"`
-	Name          string         `json:"name"`
-	URL           string         `json:"url"`
-	SSHURL        string         `json:"ssh_url"`
-	CloneURL      string         `json:"clone_url"`
-	Description   string         `json:"description"`
-	Website       string         `json:"website"`
-	Watchers      int            `json:"watchers"`
-	Owner         *PayloadAuthor `json:"owner"`
-	Private       bool           `json:"private"`
-	DefaultBranch string         `json:"default_branch"`
+	ID        string       `json:"id"`
+	Message   string       `json:"message"`
+	URL       string       `json:"url"`
+	Author    *PayloadUser `json:"author"`
+	Committer *PayloadUser `json:"committer"`
+	Timestamp time.Time    `json:"timestamp"`
 }
 
 var (
@@ -129,11 +104,11 @@ var (
 //         \/             \/     \/          \/
 
 type CreatePayload struct {
-	Secret  string       `json:"secret"`
-	Ref     string       `json:"ref"`
-	RefType string       `json:"ref_type"`
-	Repo    *PayloadRepo `json:"repository"`
-	Sender  *PayloadUser `json:"sender"`
+	Secret  string      `json:"secret"`
+	Ref     string      `json:"ref"`
+	RefType string      `json:"ref_type"`
+	Repo    *Repository `json:"repository"`
+	Sender  *User       `json:"sender"`
 }
 
 func (p *CreatePayload) SetSecret(secret string) {
@@ -177,11 +152,11 @@ type PushPayload struct {
 	Ref        string           `json:"ref"`
 	Before     string           `json:"before"`
 	After      string           `json:"after"`
-	CompareUrl string           `json:"compare_url"`
+	CompareURL string           `json:"compare_url"`
 	Commits    []*PayloadCommit `json:"commits"`
-	Repo       *PayloadRepo     `json:"repository"`
-	Pusher     *PayloadAuthor   `json:"pusher"`
-	Sender     *PayloadUser     `json:"sender"`
+	Repo       *Repository      `json:"repository"`
+	Pusher     *User            `json:"pusher"`
+	Sender     *User            `json:"sender"`
 }
 
 func (p *PushPayload) SetSecret(secret string) {
