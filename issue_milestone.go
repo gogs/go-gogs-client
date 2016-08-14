@@ -8,7 +8,7 @@ import "time"
 
 type Milestone struct {
 	ID           int64      `json:"id"`
-	State        string     `json:"state"`
+	State        StateType  `json:"state"`
 	Title        string     `json:"title"`
 	Description  string     `json:"description"`
 	OpenIssues   int        `json:"open_issues"`

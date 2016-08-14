@@ -20,22 +20,25 @@ type Permission struct {
 
 // Repository represents a API repository.
 type Repository struct {
-	ID          int64      `json:"id"`
-	Owner       *User      `json:"owner"`
-	FullName    string     `json:"full_name"`
-	Description string     `json:"description"`
-	Private     bool       `json:"private"`
-	Fork        bool       `json:"fork"`
-	HtmlUrl     string     `json:"html_url"`
-	CloneUrl    string     `json:"clone_url"`
-	SshUrl      string     `json:"ssh_url"`
-	Stars       int        `json:"stars_count"`
-	Forks       int        `json:"forks_count"`
-	Watchers    int        `json:"watchers_count"`
-	OpenIssues  int        `json:"open_issues_count"`
-	Created     time.Time  `json:"created_at"`
-	Updated     time.Time  `json:"updated_at"`
-	Permissions Permission `json:"permissions"`
+	ID            int64       `json:"id"`
+	Owner         *User       `json:"owner"`
+	Name          string      `json:"name"`
+	FullName      string      `json:"full_name"`
+	Description   string      `json:"description"`
+	Private       bool        `json:"private"`
+	Fork          bool        `json:"fork"`
+	HTMLURL       string      `json:"html_url"`
+	SSHURL        string      `json:"ssh_url"`
+	CloneURL      string      `json:"clone_url"`
+	Website       string      `json:"website"`
+	Stars         int         `json:"stars_count"`
+	Forks         int         `json:"forks_count"`
+	Watchers      int         `json:"watchers_count"`
+	OpenIssues    int         `json:"open_issues_count"`
+	DefaultBranch string      `json:"default_branch"`
+	Created       time.Time   `json:"created_at"`
+	Updated       time.Time   `json:"updated_at"`
+	Permissions   *Permission `json:"permissions,omitempty"`
 }
 
 // ListMyRepos lists all repositories for the authenticated user that has access to.

@@ -11,25 +11,33 @@ import (
 	"time"
 )
 
+type StateType string
+
+const (
+	STATE_OPEN   StateType = "open"
+	STATE_CLOSED StateType = "closed"
+)
+
 type PullRequestMeta struct {
 	HasMerged bool       `json:"merged"`
 	Merged    *time.Time `json:"merged_at"`
 }
 
 type Issue struct {
-	ID          int64            `json:"id"`
-	Index       int64            `json:"number"`
-	State       string           `json:"state"`
-	Title       string           `json:"title"`
-	Body        string           `json:"body"`
-	User        *User            `json:"user"`
-	Labels      []*Label         `json:"labels"`
-	Assignee    *User            `json:"assignee"`
-	Milestone   *Milestone       `json:"milestone"`
-	Comments    int              `json:"comments"`
+	ID        int64      `json:"id"`
+	Index     int64      `json:"number"`
+	State     StateType  `json:"state"`
+	Title     string     `json:"title"`
+	Body      string     `json:"body"`
+	User      *User      `json:"user"`
+	Labels    []*Label   `json:"labels"`
+	Milestone *Milestone `json:"milestone"`
+	Assignee  *User      `json:"assignee"`
+	Comments  int        `json:"comments"`
+	Created   time.Time  `json:"created_at"`
+	Updated   time.Time  `json:"updated_at"`
+
 	PullRequest *PullRequestMeta `json:"pull_request"`
-	Created     time.Time        `json:"created_at"`
-	Updated     time.Time        `json:"updated_at"`
 }
 
 type ListIssueOption struct {
