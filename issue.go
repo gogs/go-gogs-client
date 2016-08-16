@@ -26,13 +26,13 @@ type PullRequestMeta struct {
 type Issue struct {
 	ID        int64      `json:"id"`
 	Index     int64      `json:"number"`
-	State     StateType  `json:"state"`
+	Poster    *User      `json:"user"`
 	Title     string     `json:"title"`
 	Body      string     `json:"body"`
-	User      *User      `json:"user"`
 	Labels    []*Label   `json:"labels"`
 	Milestone *Milestone `json:"milestone"`
 	Assignee  *User      `json:"assignee"`
+	State     StateType  `json:"state"`
 	Comments  int        `json:"comments"`
 	Created   time.Time  `json:"created_at"`
 	Updated   time.Time  `json:"updated_at"`

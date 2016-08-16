@@ -13,14 +13,16 @@ type PullRequest struct {
 	// Copied from issue.go
 	ID        int64      `json:"id"`
 	Index     int64      `json:"number"`
-	State     StateType  `json:"state"`
+	Poster    *User      `json:"user"`
 	Title     string     `json:"title"`
 	Body      string     `json:"body"`
-	User      *User      `json:"user"`
 	Labels    []*Label   `json:"labels"`
 	Milestone *Milestone `json:"milestone"`
 	Assignee  *User      `json:"assignee"`
+	State     StateType  `json:"state"`
 	Comments  int        `json:"comments"`
+
+	HTMLURL string `json:"html_url"`
 
 	Mergeable      *bool      `json:"mergeable"`
 	HasMerged      bool       `json:"merged"`
