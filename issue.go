@@ -78,6 +78,7 @@ type EditIssueOption struct {
 	Body      *string `json:"body"`
 	Assignee  *string `json:"assignee"`
 	Milestone *int64  `json:"milestone"`
+	Status    *string `json:"status"`
 }
 
 func (c *Client) EditIssue(owner, repo string, index int64, opt EditIssueOption) (*Issue, error) {
