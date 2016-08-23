@@ -47,6 +47,16 @@ func (c *Client) ListMyRepos() ([]*Repository, error) {
 	return repos, c.getParsedResponse("GET", "/user/repos", nil, nil, &repos)
 }
 
+func (c *Client) ListUserRepos(user string) ([]*Repository, error) {
+	repos := make([]*Repository, 0, 10)
+	return repos, c.getParsedResponse("GET", fmt.Sprintf("/users/%s/repos", user), nil, nil, &repos)
+}
+
+func (c *Client) ListOrgRepos(org string) ([]*Repository, error) {
+	repos := make([]*Repository, 0, 10)
+	return repos, c.getParsedResponse("GET", fmt.Sprintf("/orgs/%s/repos", org), nil, nil, &repos)
+}
+
 type CreateRepoOption struct {
 	Name        string `json:"name" binding:"Required;AlphaDashDot;MaxSize(100)"`
 	Description string `json:"description" binding:"MaxSize(255)"`
