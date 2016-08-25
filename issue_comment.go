@@ -1,69 +1,57 @@
+// Copyright 2016 The Gogs Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package gogs
 
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 )
 
-// CommentType is type of a comment
-type CommentType int
-
 // Comment represents a comment in commit and issue page.
 type Comment struct {
-	ID       int64       `json:"id"`
-	Type     CommentType `json:"type"`
-	Poster   *User       `json:"poster"`
-	IssueID  int64       `json:"issue_id"`
-	CommitID int64       `json:"commit_id"`
-	Line     int64       `json:"line"`
-	Content  string      `json:"content"`
-
-	Created     time.Time `json:"created"`
-	CreatedUnix int64     `json:"created_unix"`
-
-	// Reference issue in commit message
-	CommitSHA string `json:"commit_sha"`
-
-	//Attachments []*Attachment `json:"attachments"`
+	ID      int64     `json:"id"`
+	Poster  *User     `json:"user"`
+	Body    string    `json:"body"`
+	Created time.Time `json:"created_at"`
+	Updated time.Time `json:"updated_at"`
 }
 
-// ListRepoIssueComments list comments on an issue
-func (c *Client) ListRepoIssueComments(owner, repo string, issueID int64) ([]*Comment, error) {
+// ListIssueComments list comments on an issue.
+func (c *Client) ListIssueComments(owner, repo string, index int64) ([]*Comment, error) {
 	comments := make([]*Comment, 0, 10)
-	return comments, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues/%d/comments", owner, repo, issueID), nil, nil, &comments)
+	return comments, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues/%d/comments", owner, repo, index), nil, nil, &comments)
 }
 
-// CreateIssueCommentOption is option when creating an issue comment
+// CreateIssueCommentOption is option when creating an issue comment.
 type CreateIssueCommentOption struct {
-	Content string `json:"content" binding:"required"`
+	Body string `json:"body" binding:"Required"`
 }
 
-// CreateIssueComment create comment on an issue
-func (c *Client) CreateIssueComment(owner, repo string, issueID int64, opt CreateIssueCommentOption) (*Comment, error) {
+// CreateIssueComment create comment on an issue.
+func (c *Client) CreateIssueComment(owner, repo string, index int64, opt CreateIssueCommentOption) (*Comment, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
 	}
 	comment := new(Comment)
-	return comment, c.getParsedResponse("POST", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments", owner, repo, issueID),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), comment)
+	return comment, c.getParsedResponse("POST", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments", owner, repo, index), jsonHeader, bytes.NewReader(body), comment)
 }
 
-// EditIssueCommentOption is option when editing an issue comment
+// EditIssueCommentOption is option when editing an issue comment.
 type EditIssueCommentOption struct {
-	Content string `json:"content" binding:"required"`
+	Body string `json:"body" binding:"Required"`
 }
 
-// EditIssueComment edits an issue comment
-func (c *Client) EditIssueComment(owner, repo string, issueID, commentID int64, opt EditIssueCommentOption) (*Comment, error) {
+// EditIssueComment edits an issue comment.
+func (c *Client) EditIssueComment(owner, repo string, index, commentID int64, opt EditIssueCommentOption) (*Comment, error) {
 	body, err := json.Marshal(&opt)
 	if err != nil {
 		return nil, err
 	}
 	comment := new(Comment)
-	return comment, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments/%d", owner, repo, issueID, commentID),
-		http.Header{"content-type": []string{"application/json"}}, bytes.NewReader(body), comment)
+	return comment, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments/%d", owner, repo, index, commentID), jsonHeader, bytes.NewReader(body), comment)
 }
