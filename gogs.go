@@ -38,7 +38,7 @@ func (c *Client) SetHTTPClient(client *http.Client) {
 	c.client = client
 }
 
-func (c *Client) getResponse(method, path string, header http.Header, body io.Reader) ([]byte, error) {
+func (c *Client) doRequest(method, path string, header http.Header, body io.Reader) (*http.Response, error) {
 	req, err := http.NewRequest(method, c.url+"/api/v1"+path, body)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,11 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 		req.Header[k] = v
 	}
 
-	resp, err := c.client.Do(req)
+	return c.client.Do(req)
+}
+
+func (c *Client) getResponse(method, path string, header http.Header, body io.Reader) ([]byte, error) {
+	resp, err := c.doRequest(method, path, header, body)
 	if err != nil {
 		return nil, err
 	}
