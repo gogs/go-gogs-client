@@ -22,6 +22,11 @@ type PullRequest struct {
 	State     StateType  `json:"state"`
 	Comments  int        `json:"comments"`
 
+	HeadBranch string      `json:"head_branch"`
+	HeadRepo   *Repository `json:"head_repo"`
+	BaseBranch string      `json:"base_branch"`
+	BaseRepo   *Repository `json:"base_repo"`
+
 	HTMLURL string `json:"html_url"`
 
 	Mergeable      *bool      `json:"mergeable"`
