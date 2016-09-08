@@ -55,3 +55,9 @@ func (c *Client) EditIssueComment(owner, repo string, index, commentID int64, op
 	comment := new(Comment)
 	return comment, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments/%d", owner, repo, index, commentID), jsonHeader, bytes.NewReader(body), comment)
 }
+
+// DeleteIssueComment deletes an issue comment.
+func (c *Client) DeleteIssueComment(owner, repo string, index, commentID int64) error {
+	_, err := c.getResponse("DELETE", fmt.Sprintf("/repos/%s/%s/issues/%d/comments/%d", owner, repo, index, commentID), nil, nil)
+	return err
+}
