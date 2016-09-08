@@ -26,6 +26,13 @@ func (c *Client) ListIssueComments(owner, repo string, index int64) ([]*Comment,
 	return comments, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues/%d/comments", owner, repo, index), nil, nil, &comments)
 }
 
+// ListRepoIssueComments list comments for a given repo.
+func (c *Client) ListRepoIssueComments(owner, repo string) ([]*Comment, error) {
+	comments := make([]*Comment, 0, 10)
+	return comments, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues/comments", owner, repo), nil, nil, &comments)
+}
+
+
 // CreateIssueCommentOption is option when creating an issue comment.
 type CreateIssueCommentOption struct {
 	Body string `json:"body" binding:"Required"`
