@@ -14,6 +14,7 @@ type Label struct {
 	ID    int64  `json:"id"`
 	Name  string `json:"name"`
 	Color string `json:"color"`
+	URL   string `json:"url"`
 }
 
 func (c *Client) ListRepoLabels(owner, repo string) ([]*Label, error) {

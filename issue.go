@@ -41,7 +41,8 @@ type Issue struct {
 }
 
 type ListIssueOption struct {
-	Page int
+	Page  int
+	State string
 }
 
 func (c *Client) ListRepoIssues(owner, repo string, opt ListIssueOption) ([]*Issue, error) {
