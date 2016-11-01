@@ -13,11 +13,14 @@ import (
 
 // Comment represents a comment in commit and issue page.
 type Comment struct {
-	ID      int64     `json:"id"`
-	Poster  *User     `json:"user"`
-	Body    string    `json:"body"`
-	Created time.Time `json:"created_at"`
-	Updated time.Time `json:"updated_at"`
+	ID       int64     `json:"id"`
+	HTMLURL  string    `json:"html_url"`
+	PRURL    string    `json:"pull_request_url"`
+	IssueURL string    `json:"issue_url"`
+	Poster   *User     `json:"user"`
+	Body     string    `json:"body"`
+	Created  time.Time `json:"created_at"`
+	Updated  time.Time `json:"updated_at"`
 }
 
 // ListIssueComments list comments on an issue.
@@ -31,7 +34,6 @@ func (c *Client) ListRepoIssueComments(owner, repo string) ([]*Comment, error) {
 	comments := make([]*Comment, 0, 10)
 	return comments, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues/comments", owner, repo), nil, nil, &comments)
 }
-
 
 // CreateIssueCommentOption is option when creating an issue comment.
 type CreateIssueCommentOption struct {
