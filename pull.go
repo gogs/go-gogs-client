@@ -24,7 +24,9 @@ type PullRequest struct {
 	State     StateType  `json:"state"`
 	Comments  int        `json:"comments"`
 
-	HTMLURL string `json:"html_url"`
+	HTMLURL  string `json:"html_url"`
+	DiffURL  string `json:"diff_url"`
+	PatchURL string `json:"patch_url"`
 
 	Mergeable      bool       `json:"mergeable"`
 	HasMerged      bool       `json:"merged"`
@@ -38,7 +40,9 @@ type PullRequest struct {
 }
 
 type PRBranchInfo struct {
-	Name       string      `json:"name"`
+	Name       string      `json:"label"`
+	Ref        string      `json:"ref"`
+	Sha        string      `json:"sha"`
 	RepoID     int64       `json:"repo_id"`
 	Repository *Repository `json:"repo"`
 }
