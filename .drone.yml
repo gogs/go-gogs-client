@@ -15,7 +15,6 @@ pipeline:
 
   coverage:
     image: plugins/coverage
-    server: http://coverage.gitea.io
 
   gitter:
     image: plugins/gitter
