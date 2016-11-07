@@ -14,7 +14,7 @@ import (
 )
 
 func Version() string {
-	return "0.0.2"
+	return "0.12.3"
 }
 
 // Client represents a Gogs API client.
@@ -33,7 +33,12 @@ func NewClient(url, token string) *Client {
 	}
 }
 
-func (c *Client) getResponse(method, path string, header http.Header, body io.Reader) ([]byte, error) {
+// SetHTTPClient replaces default http.Client with user given one.
+func (c *Client) SetHTTPClient(client *http.Client) {
+	c.client = client
+}
+
+func (c *Client) doRequest(method, path string, header http.Header, body io.Reader) (*http.Response, error) {
 	req, err := http.NewRequest(method, c.url+"/api/v1"+path, body)
 	if err != nil {
 		return nil, err
@@ -43,7 +48,11 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 		req.Header[k] = v
 	}
 
-	resp, err := c.client.Do(req)
+	return c.client.Do(req)
+}
+
+func (c *Client) getResponse(method, path string, header http.Header, body io.Reader) ([]byte, error) {
+	resp, err := c.doRequest(method, path, header, body)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +70,7 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 		return nil, errors.New("404 Not Found")
 	}
 
-	if resp.StatusCode != 200 && resp.StatusCode != 201 {
+	if resp.StatusCode/100 != 2 {
 		errMap := make(map[string]interface{})
 		if err = json.Unmarshal(data, &errMap); err != nil {
 			return nil, err
