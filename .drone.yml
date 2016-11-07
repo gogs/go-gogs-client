@@ -1,0 +1,21 @@
+workspace:
+  base: /srv/app
+  path: src/github.com/go-gitea/go-sdk
+
+pipeline:
+  testing:
+    image: webhippie/golang:latest
+    pull: true
+    commands:
+      - make clean
+      - make vet
+      - make lint
+      - make test
+      - make build
+
+  coverage:
+    image: plugins/coverage
+    server: http://coverage.gitea.io
+
+  gitter:
+    image: plugins/gitter
