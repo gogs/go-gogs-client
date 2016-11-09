@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package gogs
+package gitea
 
 import (
 	"bytes"
@@ -42,6 +42,16 @@ type Issue struct {
 
 type ListIssueOption struct {
 	Page int
+}
+
+func (c *Client) ListIssues(opt ListIssueOption) ([]*Issue, error) {
+	issues := make([]*Issue, 0, 10)
+	return issues, c.getParsedResponse("GET", fmt.Sprintf("/issues?page=%d", opt.Page), nil, nil, &issues)
+}
+
+func (c *Client) ListUserIssues(opt ListIssueOption) ([]*Issue, error) {
+	issues := make([]*Issue, 0, 10)
+	return issues, c.getParsedResponse("GET", fmt.Sprintf("/user/issues?page=%d", opt.Page), nil, nil, &issues)
 }
 
 func (c *Client) ListRepoIssues(owner, repo string, opt ListIssueOption) ([]*Issue, error) {
