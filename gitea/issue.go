@@ -44,6 +44,16 @@ type ListIssueOption struct {
 	Page int
 }
 
+func (c *Client) ListIssues(opt ListIssueOption) ([]*Issue, error) {
+	issues := make([]*Issue, 0, 10)
+	return issues, c.getParsedResponse("GET", fmt.Sprintf("/issues?page=%d", opt.Page), nil, nil, &issues)
+}
+
+func (c *Client) ListUserIssues(opt ListIssueOption) ([]*Issue, error) {
+	issues := make([]*Issue, 0, 10)
+	return issues, c.getParsedResponse("GET", fmt.Sprintf("/user/issues?page=%d", opt.Page), nil, nil, &issues)
+}
+
 func (c *Client) ListRepoIssues(owner, repo string, opt ListIssueOption) ([]*Issue, error) {
 	issues := make([]*Issue, 0, 10)
 	return issues, c.getParsedResponse("GET", fmt.Sprintf("/repos/%s/%s/issues?page=%d", owner, repo, opt.Page), nil, nil, &issues)
