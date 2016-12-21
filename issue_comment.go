@@ -13,14 +13,12 @@ import (
 
 // Comment represents a comment in commit and issue page.
 type Comment struct {
-	ID       int64     `json:"id"`
-	HTMLURL  string    `json:"html_url"`
-	PRURL    string    `json:"pull_request_url"`
-	IssueURL string    `json:"issue_url"`
-	Poster   *User     `json:"user"`
-	Body     string    `json:"body"`
-	Created  time.Time `json:"created_at"`
-	Updated  time.Time `json:"updated_at"`
+	ID      int64     `json:"id"`
+	HTMLURL string    `json:"html_url"`
+	Poster  *User     `json:"user"`
+	Body    string    `json:"body"`
+	Created time.Time `json:"created_at"`
+	Updated time.Time `json:"updated_at"`
 }
 
 // ListIssueComments list comments on an issue.
