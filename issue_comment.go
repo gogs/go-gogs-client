@@ -38,7 +38,7 @@ func (c *Client) CreateIssueComment(owner, repo string, index int64, opt CreateI
 		return nil, err
 	}
 	comment := new(Comment)
-	return comment, c.getParsedResponse("POST", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments", owner, repo, index), jsonHeader, bytes.NewReader(body), comment)
+	return comment, c.getParsedResponse("POST", fmt.Sprintf("/repos/%s/%s/issues/%d/comments", owner, repo, index), jsonHeader, bytes.NewReader(body), comment)
 }
 
 // EditIssueCommentOption is option when editing an issue comment.
@@ -53,5 +53,5 @@ func (c *Client) EditIssueComment(owner, repo string, index, commentID int64, op
 		return nil, err
 	}
 	comment := new(Comment)
-	return comment, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/:%s/:%s/issues/%d/comments/%d", owner, repo, index, commentID), jsonHeader, bytes.NewReader(body), comment)
+	return comment, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/%s/%s/issues/%d/comments/%d", owner, repo, index, commentID), jsonHeader, bytes.NewReader(body), comment)
 }
