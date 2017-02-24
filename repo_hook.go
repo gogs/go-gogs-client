@@ -70,7 +70,6 @@ func (c *Client) DeleteRepoHook(user, repo string, id int64) error {
 }
 
 type Payloader interface {
-	SetSecret(string)
 	JSONPayload() ([]byte, error)
 }
 
