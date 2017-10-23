@@ -24,7 +24,7 @@ type Client struct {
 	client      *http.Client
 }
 
-// NewClient initializes and returns a API client.
+// NewClient initializes and returns an API client.
 func NewClient(url, token string) *Client {
 	return &Client{
 		url:         strings.TrimSuffix(url, "/"),
