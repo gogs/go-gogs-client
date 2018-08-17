@@ -17,7 +17,7 @@ func (c *Client) GetFile(user, repo, ref, tree string) ([]byte, error) {
 // GetArchive downloads the full contents of a repository. Ref can be a branch/tag/commit.
 func (c *Client) GetArchive(user, repo, ref, format string) ([]byte, error) {
 	if format != ".zip" && format != ".tar.gz" {
-		return nil, fmt.Errorf("Invalid format: %s (Must be .zip or .tar.gz)", format)
+		return nil, fmt.Errorf("invalid format: %s (must be .zip or .tar.gz)", format)
 	}
 	return c.getResponse("GET", fmt.Sprintf("/repos/%s/%s/archive/%s%s", user, repo, ref, format), nil, nil)
 }
