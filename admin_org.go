@@ -19,3 +19,31 @@ func (c *Client) AdminCreateOrg(user string, opt CreateOrgOption) (*Organization
 	return org, c.getParsedResponse("POST", fmt.Sprintf("/admin/users/%s/orgs", user),
 		jsonHeader, bytes.NewReader(body), org)
 }
+
+func (c *Client) AdminCreateTeam(user string, opt CreateTeamOption) (*Team, error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return nil, err
+	}
+	org := new(Team)
+	return org, c.getParsedResponse("POST", fmt.Sprintf("/admin/orgs/%s/teams", user),
+		jsonHeader, bytes.NewReader(body), org)
+}
+
+func (c *Client) AdminAddTeamMembership(teamID int64, user string) error {
+	_, err := c.getResponse("PUT", fmt.Sprintf("/admin/teams/%s/members/%s", teamID, user),
+		jsonHeader, nil)
+	return err
+}
+
+func (c *Client) AdminAddTeamRepository(teamID int64, repo string) error {
+	_, err := c.getResponse("PUT", fmt.Sprintf("/admin/teams/%s/repos/%s", teamID, repo),
+		jsonHeader, nil)
+	return err
+}
+
+// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/users/${ADMIN_USER}/orgs;
+// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/orgs/${org}/teams;
+// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/users
+// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/teams/2/members/${username}
+// http://gogs.${POD_NAMESPACE}.svc/api/v1/users/${ADMIN_USER}/tokens
