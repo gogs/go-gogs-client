@@ -31,13 +31,13 @@ func (c *Client) AdminCreateTeam(user string, opt CreateTeamOption) (*Team, erro
 }
 
 func (c *Client) AdminAddTeamMembership(teamID int64, user string) error {
-	_, err := c.getResponse("PUT", fmt.Sprintf("/admin/teams/%s/members/%s", teamID, user),
+	_, err := c.getResponse("PUT", fmt.Sprintf("/admin/teams/%d/members/%s", teamID, user),
 		jsonHeader, nil)
 	return err
 }
 
 func (c *Client) AdminAddTeamRepository(teamID int64, repo string) error {
-	_, err := c.getResponse("PUT", fmt.Sprintf("/admin/teams/%s/repos/%s", teamID, repo),
+	_, err := c.getResponse("PUT", fmt.Sprintf("/admin/teams/%d/repos/%s", teamID, repo),
 		jsonHeader, nil)
 	return err
 }
