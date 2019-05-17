@@ -41,9 +41,3 @@ func (c *Client) AdminAddTeamRepository(teamID int64, repo string) error {
 		jsonHeader, nil)
 	return err
 }
-
-// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/users/${ADMIN_USER}/orgs;
-// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/orgs/${org}/teams;
-// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/users
-// http://gogs.${POD_NAMESPACE}.svc/api/v1/admin/teams/2/members/${username}
-// http://gogs.${POD_NAMESPACE}.svc/api/v1/users/${ADMIN_USER}/tokens
