@@ -25,9 +25,9 @@ func (c *Client) AdminCreateTeam(user string, opt CreateTeamOption) (*Team, erro
 	if err != nil {
 		return nil, err
 	}
-	org := new(Team)
-	return org, c.getParsedResponse("POST", fmt.Sprintf("/admin/orgs/%s/teams", user),
-		jsonHeader, bytes.NewReader(body), org)
+	team := new(Team)
+	return team, c.getParsedResponse("POST", fmt.Sprintf("/admin/orgs/%s/teams", user),
+		jsonHeader, bytes.NewReader(body), team)
 }
 
 func (c *Client) AdminAddTeamMembership(teamID int64, user string) error {
