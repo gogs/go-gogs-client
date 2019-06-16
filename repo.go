@@ -145,3 +145,8 @@ func (c *Client) EditIssueTracker(owner, repo string, opt EditIssueTrackerOption
 	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/issue-tracker", owner, repo), jsonHeader, bytes.NewReader(body))
 	return err
 }
+
+func (c *Client) MirrorSync(owner, repo string) error {
+	_, err := c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/mirror-sync", owner, repo), jsonHeader, nil)
+	return err
+}
