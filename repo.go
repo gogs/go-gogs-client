@@ -142,7 +142,7 @@ func (c *Client) EditIssueTracker(owner, repo string, opt EditIssueTrackerOption
 	if err != nil {
 		return err
 	}
-	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/issue-tracker", owner, repo), jsonHeader, bytes.NewReader(body))
+	_, err = c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/issue-tracker", owner, repo), jsonHeader, bytes.NewReader(body))
 	return err
 }
 
