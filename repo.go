@@ -159,7 +159,7 @@ func (c *Client) EditWiki(owner, repo string, opt EditWikiOption) error {
 	if err != nil {
 		return err
 	}
-	_, err = c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/wiki", owner, repo), jsonHeader, bytes.NewReader(body))
+	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/wiki", owner, repo), jsonHeader, bytes.NewReader(body))
 	return err
 }
 
