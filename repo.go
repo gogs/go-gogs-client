@@ -146,6 +146,23 @@ func (c *Client) EditIssueTracker(owner, repo string, opt EditIssueTrackerOption
 	return err
 }
 
+type EditWikiOption struct {
+	EnableWiki         *bool   `json:"enable_wiki"`
+	AllowPublicWiki    *bool   `json:"allow_public_wiki"`
+	EnableExternalWiki *bool   `json:"enable_external_wiki"`
+	ExternalWikiURL    *string `json:"external_wiki_url"`
+}
+
+// EditWiki updates wiki options of the repository.
+func (c *Client) EditWiki(owner, repo string, opt EditWikiOption) error {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return err
+	}
+	_, err = c.getResponse("PATCH", fmt.Sprintf("/repos/%s/%s/wiki", owner, repo), jsonHeader, bytes.NewReader(body))
+	return err
+}
+
 func (c *Client) MirrorSync(owner, repo string) error {
 	_, err := c.getResponse("POST", fmt.Sprintf("/repos/%s/%s/mirror-sync", owner, repo), jsonHeader, nil)
 	return err
