@@ -26,6 +26,7 @@ type Repository struct {
 	FullName      string      `json:"full_name"`
 	Description   string      `json:"description"`
 	Private       bool        `json:"private"`
+	Unlisted      bool        `json:"unlisted"`
 	Fork          bool        `json:"fork"`
 	Parent        *Repository `json:"parent"`
 	Empty         bool        `json:"empty"`
@@ -65,6 +66,7 @@ type CreateRepoOption struct {
 	Name        string `json:"name" binding:"Required;AlphaDashDot;MaxSize(100)"`
 	Description string `json:"description" binding:"MaxSize(255)"`
 	Private     bool   `json:"private"`
+	Unlisted    bool   `json:"unlisted"`
 	AutoInit    bool   `json:"auto_init"`
 	Gitignores  string `json:"gitignores"`
 	License     string `json:"license"`
@@ -111,6 +113,7 @@ type MigrateRepoOption struct {
 	RepoName     string `json:"repo_name" binding:"Required"`
 	Mirror       bool   `json:"mirror"`
 	Private      bool   `json:"private"`
+	Unlisted     bool   `json:"unlisted"`
 	Description  string `json:"description"`
 }
 
