@@ -41,3 +41,10 @@ func (c *Client) AdminAddTeamRepository(teamID int64, repo string) error {
 		jsonHeader, nil)
 	return err
 }
+
+func (c *Client) ListTeamMembers(teamID int64) ([]*User, error) {
+	users := make([]*User, 0, 5)
+	err := c.getParsedResponse("GET", fmt.Sprintf("/admin/teams/%d/members", teamID),
+		nil, nil, &users)
+	return users, err
+}
