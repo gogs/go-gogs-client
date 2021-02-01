@@ -88,3 +88,13 @@ func (c *Client) getParsedResponse(method, path string, header http.Header, body
 	}
 	return json.Unmarshal(data, obj)
 }
+
+func (c *Client) getStatusCode(method, path string, header http.Header, body io.Reader) (int, error) {
+	resp, err := c.doRequest(method, path, header, body)
+	if err != nil {
+		return -1, err
+	}
+	defer resp.Body.Close()
+
+	return resp.StatusCode, nil
+}
