@@ -66,3 +66,26 @@ func (c *Client) AdminCreateUserPublicKey(user string, opt CreateKeyOption) (*Pu
 	key := new(PublicKey)
 	return key, c.getParsedResponse("POST", fmt.Sprintf("/admin/users/%s/keys", user), jsonHeader, bytes.NewReader(body), key)
 }
+
+func (c *Client) AdminListUserEmails(user string) ([]*Email, error) {
+	emails := make([]*Email, 0, 3)
+	return emails, c.getParsedResponse("GET", fmt.Sprintf("/admin/users/%s/emails", user), nil, nil, &emails)
+}
+
+func (c *Client) AdminAddUserEmail(user string, opt CreateEmailOption) ([]*Email, error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return nil, err
+	}
+	emails := make([]*Email, 0, 3)
+	return emails, c.getParsedResponse("POST", fmt.Sprintf("/admin/users/%s/emails", user), jsonHeader, bytes.NewReader(body), emails)
+}
+
+func (c *Client) AdminDeleteUserEmail(user string, opt CreateEmailOption) error {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return err
+	}
+	_, err = c.getResponse("DELETE", fmt.Sprintf("/admin/users/%s/emails", user), jsonHeader, bytes.NewReader(body))
+	return err
+}
