@@ -16,6 +16,8 @@ type User struct {
 	FullName  string `json:"full_name"`
 	Email     string `json:"email"`
 	AvatarUrl string `json:"avatar_url"`
+	Location  string `json:"location"`
+	Website   string `json:"website"`
 }
 
 func (c *Client) GetUserInfo(user string) (*User, error) {
