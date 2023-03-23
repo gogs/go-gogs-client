@@ -131,6 +131,23 @@ func (c *Client) MigrateRepo(opt MigrateRepoOption) (*Repository, error) {
 	return repo, c.getParsedResponse("POST", "/repos/migrate", jsonHeader, bytes.NewReader(body), repo)
 }
 
+type EditRepoOption struct {
+	Description   *string `json:"description" binding:"MaxSize(255)"`
+	Private       *bool   `json:"private"`
+	Unlisted      *bool   `json:"unlisted"`
+	DefaultBranch *string `json:"default_branch"`
+}
+
+// EditRepo modifies a repository.
+func (c *Client) EditRepo(owner, repo string, opt EditRepoOption) (*Repository, error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return nil, err
+	}
+	modRepo := new(Repository)
+	return modRepo, c.getParsedResponse("PATCH", fmt.Sprintf("/repos/%s/%s", owner, repo), jsonHeader, bytes.NewReader(body), modRepo)
+}
+
 type EditIssueTrackerOption struct {
 	EnableIssues          *bool   `json:"enable_issues"`
 	EnableExternalTracker *bool   `json:"enable_external_tracker"`
