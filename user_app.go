@@ -44,3 +44,20 @@ func (c *Client) CreateAccessToken(user, pass string, opt CreateAccessTokenOptio
 			"Authorization": []string{"Basic " + BasicAuthEncode(user, pass)}},
 		bytes.NewReader(body), t)
 }
+
+type DeleteAccessTokenOption struct {
+	Sha1 string `json:"sha1" binding:"Required"`
+}
+
+func (c *Client) DeleteAccessToken(user, pass string, opt DeleteAccessTokenOption) (*AccessToken, error) {
+	body, err := json.Marshal(&opt)
+	if err != nil {
+		return nil, err
+	}
+	t := new(AccessToken)
+	return t, c.getParsedResponse("DELETE", fmt.Sprintf("/users/%s/tokens", user),
+		http.Header{
+			"content-type":  []string{"application/json"},
+			"Authorization": []string{"Basic " + BasicAuthEncode(user, pass)}},
+		bytes.NewReader(body), t)
+}
